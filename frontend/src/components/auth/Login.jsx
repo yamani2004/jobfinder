@@ -8,6 +8,10 @@ import { Button } from '../ui/button'
 import axios from 'axios'
 import { USER_API_END_POINT } from '../../utils/const'
 import { toast } from 'sonner'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from '../../redux/authSlice'
+import store from '../../redux/store'
+import { Loader2 } from 'lucide-react'
 export default function Login() {
 
     const [input, setInput] = useState({
@@ -15,8 +19,12 @@ export default function Login() {
             password:"",
         });
 
+        const {loading} = useSelector(store => store.auth);
+
         const navigate = useNavigate();
-    
+
+        const dispatch = useDispatch();
+
         const changeEventHandler = (e) => {
             setInput({...input, [e.target.name]:e.target.value});
         }
@@ -24,6 +32,9 @@ export default function Login() {
         const submitHandler = async (e) => {
             e.preventDefault();
             try {
+
+                dispatch(setLoading(true)); // loading effect
+
                 const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
                     headers:{
                         "Content-Type":"application/json"
@@ -38,6 +49,8 @@ export default function Login() {
             } catch (error) {
                 console.log(error)
                 toast.error(error.response.data.message);
+            } finally {
+                dispatch(setLoading(false));
             }
         }
 
@@ -94,7 +107,9 @@ export default function Login() {
                             </div>
                         </RadioGroup>
                     </div>
-                    <Button type='submit' className='w-full my-4'>Log In</Button>
+                    {
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'>Please Wait</Loader2></Button> : <Button type='submit' className='w-full my-4'>Log In</Button>
+                    }
                     <span className='flex items-center justify-center gap-5 text-red-500'>Don't have an account ? <Link to='/signup' className='text-blue-600'>SignUp</Link></span>
                 </form>
             </div>

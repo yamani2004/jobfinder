@@ -8,6 +8,10 @@ import { Button } from '../ui/button'
 import axios from 'axios';
 import { USER_API_END_POINT } from '../../utils/const'
 import { toast } from 'sonner'
+import { useDispatch, useSelector } from 'react-redux'
+import store from '../../redux/store'
+import { setLoading } from '../../redux/authSlice'
+import { Loader2 } from 'lucide-react'
 export default function Signup() {
 
     const [input, setInput] = useState({
@@ -19,7 +23,10 @@ export default function Signup() {
         file:"",
     });
 
+    const {loading} = useSelector(store => store.auth);
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const changeEventHandler = (e) => {
         setInput({...input, [e.target.name]:e.target.value});
@@ -42,6 +49,7 @@ export default function Signup() {
             formData.append("file", input.file);
         }
         //console.log(formData);
+        dispatch(setLoading(true)); // loading effect
         try {
             const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
                 headers:{
@@ -58,6 +66,8 @@ export default function Signup() {
         } catch (error) {
             //console.log(error.response.data.message);
             toast.error(error.response.data.message);
+        } finally {
+            dispatch(setLoading(false));
         }
     }
 
@@ -142,7 +152,9 @@ export default function Signup() {
                             />
                         </div>
                     </div>
-                    <Button type='submit' className='w-full my-4'>Sign Up</Button>
+                    {
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'>Please Wait</Loader2></Button> : <Button type='submit' className='w-full my-4'>Sign Up</Button>
+                    }
                     <span className='flex items-center justify-center gap-5 text-red-500'>Already Have an account ? <Link to='/login' className='text-blue-600'>LogIn</Link></span>
                 </form>
             </div>
