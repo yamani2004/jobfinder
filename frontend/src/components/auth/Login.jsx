@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Link, useNavigate } from 'react-router-dom'
@@ -17,9 +17,10 @@ export default function Login() {
     const [input, setInput] = useState({
             email:"",
             password:"",
+            role:"",
         });
 
-        const {loading} = useSelector(store => store.auth);
+        const {loading,user} = useSelector(store => store.auth);
 
         const navigate = useNavigate();
 
@@ -39,8 +40,8 @@ export default function Login() {
                     headers:{
                         "Content-Type":"application/json"
                     },
-                    withCredentials: true
-                })
+                    withCredentials: true,
+                });
     
                 if(res.data.success){
                     dispatch(setUser(res.data.user));
@@ -60,7 +61,7 @@ export default function Login() {
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
                 <form onSubmit={submitHandler} className='w-1/2 border border-gray-500 rounded-md p-4 my-10'>
-                    <h1 className='font-bold text-xl mb-5'>Log In</h1>
+                    <h1 className='font-bold text-xl mb-5'>Login</h1>
                     
                     <div className='my-2'>
                         <Label>Email</Label>
@@ -109,7 +110,7 @@ export default function Login() {
                         </RadioGroup>
                     </div>
                     {
-                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'>Please Wait</Loader2></Button> : <Button type='submit' className='w-full my-4'>Log In</Button>
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'>Please Wait</Loader2></Button> : <Button type='submit' className='w-full my-4'>Login</Button>
                     }
                     <span className='flex items-center justify-center gap-5 text-red-500'>Don't have an account ? <Link to='/signup' className='text-blue-600'>SignUp</Link></span>
                 </form>
