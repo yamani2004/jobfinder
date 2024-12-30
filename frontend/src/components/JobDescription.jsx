@@ -1,20 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { JOB_API_END_POINT } from "../utils/const";
+import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "../utils/const";
 import { setSingleJob } from "../redux/jobSlice";
 import store from "../redux/store";
+import { toast } from "sonner";
 
 export default function JobDescription() {
   const { singleJob } = useSelector(store => store.job)
   const {user} = useSelector(store => store.auth)
 
-  const isApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  const isInitiallyApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  const [isApplied, setApplied] = useState(isInitiallyApplied);
+
   const params = useParams();
   const jobid = params.id;
+
+  const applyJobHandler = async() =>{
+    try {
+      const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobid}`, {withCredentials:true});
+      if(res.data.success){
+        setApplied(true); // updatethe local state
+        const updatedSingleJob = {...singleJob, applications:[...singleJob.applications, {applicant:user?._id}]};
+        dispatch(setSingleJob(updatedSingleJob)); // used to update real time ui update
+        toast.success(res.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  }
+
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -23,6 +42,7 @@ export default function JobDescription() {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobid}`, { withCredentials: true });
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job))
+          setApplied(res.data.job.applications.some(application => application.applicant === user?._id)) // 
         }
       } catch (error) {
         console.log(error);
@@ -50,7 +70,7 @@ export default function JobDescription() {
           </div>
         </div>
 
-        <Button disabled={isApplied} className={`rounded-lg ${isApplied ? 'bg-gray-400 : cursor-not-allowed' : 'bg-[#ed5432] hover:bg-[#e76f54]'}`}>{isApplied ? 'Already Applied' : 'Apply Now'}</Button>
+        <Button onClick ={isApplied ? null : applyJobHandler} disabled={isApplied} className={`rounded-lg ${isApplied ? 'bg-gray-400 : cursor-not-allowed' : 'bg-[#ed5432] hover:bg-[#e76f54]'}`}>{isApplied ? 'Already Applied' : 'Apply Now'}</Button>
       </div>
       <h1 className='border-b-2 border-b-gray-300 font-medium py-4'>{singleJob?.description}</h1>
       <div className='my-4'>
