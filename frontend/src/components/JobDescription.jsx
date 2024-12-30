@@ -3,7 +3,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 
 export default function JobDescription() {
-    const isApplied = true;
+    const isApplied = false;
   return (
     <div className="max-w-7xl mx-auto my-10">
       <div className="flex items-centre justify-between">
@@ -25,7 +25,7 @@ export default function JobDescription() {
           </div>
         </div>
 
-        <Button disabled = {isApplied}className={`rounded-lg ${isApplied ? 'bg-gray-400 : cursor-not-allowed' : 'bg-[#7209b7] hover:bg-[#5f32ad]'}`}>{isApplied ? 'Already Applied' : 'Apply Now' }</Button>
+        <Button disabled = {isApplied}className={`rounded-lg ${isApplied ? 'bg-gray-400 : cursor-not-allowed' : 'bg-[#ed5432] hover:bg-[#e76f54]'}`}>{isApplied ? 'Already Applied' : 'Apply Now' }</Button>
       </div>
       <h1 className='border-b-2 border-b-gray-300 font-medium py-4'>Job Description</h1>
       <div className='my-4'>

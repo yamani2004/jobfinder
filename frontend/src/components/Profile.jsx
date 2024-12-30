@@ -23,7 +23,7 @@ export default function Profile() {
                 <div className="flex justify-between">
                     <div className="flex  items-center gap-4">
                         <Avatar className="h-24 w-24">
-                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarImage src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"} />
                         </Avatar>
                         <div>
                             <h1 className='font-medium text-xl'>{user?.fullname}</h1>
@@ -46,7 +46,7 @@ export default function Profile() {
                     <h1>Skills</h1>
                     <div className='flex items-center gap-2 my-2'>
                         {
-                            user?.profile?.skills.length !== 0 ? user?.profile?.skills.map((el, ind) => <Badge key={ind}>{el}</Badge>) : <span>NA</span>
+                            user?.profile?.skills.length !== 0 ? user?.profile?.skills.map((el, ind) => <Badge key={ind}> { el } </Badge>) : <span>NA</span>
                         }
                     </div>
                 </div>

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import store from '../../redux/store'
 import { toast } from 'sonner'
 import { setUser } from '@/redux/authSlice'
+import { USER_API_END_POINT } from '../../utils/const'
+import axios from 'axios'
 export default function Navbar() {
     const { user } = useSelector(store => store.auth);
     const dispatch = useDispatch();
@@ -58,27 +60,26 @@ export default function Navbar() {
                                 </>
                             )
                         }
-
-
                     </ul>
+                    
                     {
                         !user ? (
                             <div className='flex items-center gap-2'>
                                 <Link to="/login"><Button variant="outline">Login</Button></Link>
-                                <Link to="/signup"><Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">Signup</Button></Link>
+                                <Link to="/signup"><Button className="bg-[#ed5432] hover:bg-[#e76f54]">Signup</Button></Link>
                             </div>
                         ) : (
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Avatar className="cursor-pointer">
-                                        <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
+                                        <AvatarImage src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"} alt="@shadcn" />
                                     </Avatar>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-80">
                                     <div className=''>
                                         <div className='flex gap-2 space-y-2'>
                                             <Avatar className="cursor-pointer">
-                                                <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
+                                                <AvatarImage src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"} alt="@shadcn" />
                                             </Avatar>
                                             <div>
                                                 <h4 className='font-medium'>{user?.fullname}</h4>
