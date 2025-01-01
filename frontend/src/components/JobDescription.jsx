@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "../utils/const";
+import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "../utils/constant";
 import { setSingleJob } from "../redux/jobSlice";
 import store from "../redux/store";
 import { toast } from "sonner";

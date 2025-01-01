@@ -6,7 +6,7 @@ import { Input } from '../ui/input'
 import { RadioGroup } from '../ui/radio-group'
 import { Button } from '../ui/button'
 import axios from 'axios';
-import { USER_API_END_POINT } from '../../utils/const'
+import { USER_API_END_POINT } from '../../utils/constant'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import store from '../../redux/store'
