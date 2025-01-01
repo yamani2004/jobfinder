@@ -6,20 +6,20 @@ import { Edit2, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-export default function CompaniesTable() {
+const CompaniesTable = () => {
     const { companies, searchCompanyByText } = useSelector(store => store.company);
     const [filterCompany, setFilterCompany] = useState(companies);
     const navigate = useNavigate();
-    useEffect(() => {
-        const filteredCompany = companies.length > 0 && companies.filter((company) =>{
+    useEffect(()=>{
+        const filteredCompany = companies.length >= 0 && companies.filter((company)=>{
             if(!searchCompanyByText){
-                return true;
+                return true
             };
             return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
+
         });
         setFilterCompany(filteredCompany);
-    },[companies, searchCompanyByText])
-
+    },[companies,searchCompanyByText])
     return (
         <div>
             <Table>
@@ -38,18 +38,16 @@ export default function CompaniesTable() {
                             <tr>
                                 <TableCell>
                                     <Avatar>
-                                        <AvatarImage src={company.logo} />
+                                        <AvatarImage src={company.logo}/>
                                     </Avatar>
                                 </TableCell>
-                                <TableCell>
-                                    {company.name}
-                                </TableCell>
+                                <TableCell>{company.name}</TableCell>
                                 <TableCell>{company.createdAt.split("T")[0]}</TableCell>
                                 <TableCell className="text-right cursor-pointer">
                                     <Popover>
                                         <PopoverTrigger><MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className="w-32">
-                                            <div onClick={() => navigate(`/admin/companies/${company._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
+                                            <div onClick={()=> navigate(`/admin/companies/${company._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>
                                             </div>
@@ -57,6 +55,7 @@ export default function CompaniesTable() {
                                     </Popover>
                                 </TableCell>
                             </tr>
+
                         ))
                     }
                 </TableBody>
@@ -64,3 +63,5 @@ export default function CompaniesTable() {
         </div>
     )
 }
+
+export default CompaniesTable
