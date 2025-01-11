@@ -157,9 +157,10 @@ export default function UpdateProfileDialog({open,setOpen}) {
                         />
                         </div>
                     </div>
+                    <span>Also attach your resume.</span>
                     <DialogFooter>
                     {
-                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'>Please Wait</Loader2></Button> : <Button type='submit' className='w-full my-4'>Update</Button>
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 animate-spin'></Loader2>Please Wait</Button> : <Button type='submit' className='w-full my-4'>Update</Button>
                     }
                     </DialogFooter>
                 </form>

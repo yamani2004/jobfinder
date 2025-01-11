@@ -7,16 +7,16 @@ import { setSearchedQuery } from '@/redux/jobSlice'
 const fitlerData = [
     {
         fitlerType: "Location",
-        array: ["Delhi NCR", "Bangalore", "Hyderabad", "Pune", "Mumbai"]
+        array: ["Delhi", "Bangalore", "Hyderabad", "Pune", "Mumbai", "Remote"]
     },
     {
         fitlerType: "Industry",
-        array: ["Frontend Developer", "Backend Developer", "FullStack Developer"]
+        array: ["Frontend Developer", "Backend Developer", "FullStack Developer", "SWE intern", "Machine Learning"]
     },
-    {
-        fitlerType: "Salary",
-        array: ["0-40k", "42-1lakh", "1lakh to 5lakh"]
-    },
+    // {
+    //     fitlerType: "Salary",
+    //     array: ["0-40k", "42-1lakh", "1lakh to 5lakh"]
+    // },
 ]
 
 const FilterCard = () => {
@@ -26,6 +26,7 @@ const FilterCard = () => {
         setSelectedValue(value);
     }
     useEffect(()=>{
+        console.log(selectedValue)
         dispatch(setSearchedQuery(selectedValue));
     },[selectedValue]);
     return (
