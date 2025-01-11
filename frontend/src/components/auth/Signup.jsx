@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,25 +15,25 @@ import { Loader2 } from 'lucide-react'
 export default function Signup() {
 
     const [input, setInput] = useState({
-        fullname:"",
-        email:"",
-        phoneNumber:"",
-        password:"",
-        role:"",
-        file:"",
+        fullname: "",
+        email: "",
+        phoneNumber: "",
+        password: "",
+        role: "",
+        file: "",
     });
 
-    const {loading} = useSelector(store => store.auth);
+    const { loading, user} = useSelector(store => store.auth);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const changeEventHandler = (e) => {
-        setInput({...input, [e.target.name]:e.target.value});
+        setInput({ ...input, [e.target.name]: e.target.value });
     }
 
     const changeFileHandler = (e) => {
-        setInput({...input, file:e.target.files?.[0]});
+        setInput({ ...input, file: e.target.files?.[0] });
     }
 
     const submitHandler = async (e) => {
@@ -45,20 +45,20 @@ export default function Signup() {
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("password", input.password);
         formData.append("role", input.role);
-        if(input.file){
+        if (input.file) {
             formData.append("file", input.file);
         }
         //console.log(formData);
         dispatch(setLoading(true)); // loading effect
         try {
             const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-                headers:{
-                    "Content-Type":"multipart/form-data"
+                headers: {
+                    "Content-Type": "multipart/form-data"
                 },
                 withCredentials: true
             })
             //console.log(res);
-            if(res.data.success){
+            if (res.data.success) {
                 navigate("/login");
                 //console.log(res.data.message);
                 toast.success(res.data.message);
@@ -70,6 +70,12 @@ export default function Signup() {
             dispatch(setLoading(false));
         }
     }
+    
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+        }
+    }, []);
 
     return (
         <div>
@@ -79,76 +85,76 @@ export default function Signup() {
                     <h1 className='font-bold text-xl mb-5'>Sign Up</h1>
                     <div className='my-2'>
                         <Label>Full Name</Label>
-                        <Input 
-                        type='text' 
-                        placeholder='Enter your name' 
-                        value={input.fullname}
-                        name="fullname"
-                        onChange = {changeEventHandler}
+                        <Input
+                            type='text'
+                            placeholder='Enter your name'
+                            value={input.fullname}
+                            name="fullname"
+                            onChange={changeEventHandler}
                         />
                     </div>
                     <div className='my-2'>
                         <Label>Email</Label>
-                        <Input 
-                        type='email' 
-                        placeholder='abc@gmail.com' 
-                        value={input.email}
-                        name="email"
-                        onChange = {changeEventHandler}
+                        <Input
+                            type='email'
+                            placeholder='abc@gmail.com'
+                            value={input.email}
+                            name="email"
+                            onChange={changeEventHandler}
                         />
                     </div>
                     <div className='my-2'>
                         <Label>Phone Number</Label>
-                        <Input 
-                        type='text' 
-                        placeholder='Enter phone number' 
-                        value={input.phoneNumber}
-                        name="phoneNumber"
-                        onChange = {changeEventHandler}
+                        <Input
+                            type='text'
+                            placeholder='Enter phone number'
+                            value={input.phoneNumber}
+                            name="phoneNumber"
+                            onChange={changeEventHandler}
                         />
                     </div>
                     <div className='my-2'>
                         <Label>Password</Label>
-                        <Input 
-                        type='password' 
-                        placeholder='Enter password' 
-                        value={input.password}
-                        name="password"
-                        onChange = {changeEventHandler}
+                        <Input
+                            type='password'
+                            placeholder='Enter password'
+                            value={input.password}
+                            name="password"
+                            onChange={changeEventHandler}
                         />
                     </div>
                     <div className='flex items-center justify-between'>
                         <RadioGroup className='flex items-center gap-3 my-5'>
                             <div className="flex items-center space-x-2">
-                                <Input 
-                                type='radio' 
-                                name='role' 
-                                value='student' 
-                                className='cursor-pointer w-5'
-                                checked={input.role === 'student'}
-                                onChange={changeEventHandler}
-                                 />
+                                <Input
+                                    type='radio'
+                                    name='role'
+                                    value='student'
+                                    className='cursor-pointer w-5'
+                                    checked={input.role === 'student'}
+                                    onChange={changeEventHandler}
+                                />
                                 <Label htmlFor="r1">As a student</Label>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Input 
-                                type='radio' 
-                                name='role' 
-                                value='recruiter' 
-                                className='cursor-pointer w-5' 
-                                checked={input.role === 'recruiter'}
-                                onChange={changeEventHandler}
+                                <Input
+                                    type='radio'
+                                    name='role'
+                                    value='recruiter'
+                                    className='cursor-pointer w-5'
+                                    checked={input.role === 'recruiter'}
+                                    onChange={changeEventHandler}
                                 />
                                 <Label htmlFor="r2">As a recruiter</Label>
                             </div>
                         </RadioGroup>
                         <div className='flex items-center gap-2'>
                             <Label>Profile</Label>
-                            <Input 
-                            accept='image/*' 
-                            type='file' 
-                            className='cursor-pointer' 
-                            onChange={changeFileHandler}
+                            <Input
+                                accept='image/*'
+                                type='file'
+                                className='cursor-pointer'
+                                onChange={changeFileHandler}
                             />
                         </div>
                     </div>

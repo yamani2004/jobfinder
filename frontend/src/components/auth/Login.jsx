@@ -56,6 +56,12 @@ export default function Login() {
             }
         }
 
+        useEffect(() => {
+            if(user){
+                navigate("/")
+            }
+        }, []);
+        
     return (
         <div>
             <Navbar />
