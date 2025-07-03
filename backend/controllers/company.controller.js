@@ -83,6 +83,12 @@ export const updateCompany = async (req, res) => {
 
         const company = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
+        // By default, MongoDB's findByIdAndUpdate method returns the original document before the update is applied, not the updated one.
+        // This behavior can be problematic if you need to confirm or use the updated document after the operation.
+        // new: true changes this default behavior:
+        // Ensures the updated document (with the modifications applied) is returned.
+        // Allows you to see the updated data immediately.
+
         if (!company) {
             return res.status(404).json({
                 message: "Company not found.",

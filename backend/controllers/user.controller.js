@@ -92,6 +92,10 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
+// httpsOnly: Prevents the cookie from being accessed via JavaScript (enhances security).
+// sameSite: 'strict': Restricts the cookie to requests originating from the same site.
+
+
         return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
             message: `Welcome back ${user.fullname}`,
             user,
@@ -102,6 +106,7 @@ export const login = async (req, res) => {
     }
 }
 export const logout = async (req, res) => {
+    // user logout by clearing the authentication cookie
     try {
         return res.status(200).cookie("token", "", { maxAge: 0 }).json({
             message: "Logged out successfully.",
@@ -110,7 +115,11 @@ export const logout = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-}
+
+//     When a user logs out, the server clears their token cookie.
+//     The browser deletes the cookie, ensuring the user’s session is invalidated.
+//     If the user tries to access a protected route after logout, the server won’t receive a valid token and will deny access.
+ }
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, bio, skills } = req.body;

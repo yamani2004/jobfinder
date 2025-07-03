@@ -44,16 +44,23 @@ export const getAllJobs = async (req,res) =>{
             ]
         };
 
+        // $regex: Performs a pattern match to find documents with fields that match the keyword.
+        // Example: Searching for "developer" would match titles or descriptions containing "Developer", "developer", or "DEVELOPER".
 
         const jobs=await Job.find(query).populate({
             path:"company"
         }).sort({createdAt:-1});
+        
         if(!jobs){
             return res.status(404).json({
                 message:"Oops!, No match found",
                 success:false
             });
         }
+
+        // .populate({ path: "company" }):
+        // Populates the company field in each job document with the corresponding Company document.
+        // Instead of just returning the company ID, it fetches all details of the related Company document.
 
 
         return res.status(200).json({
@@ -72,7 +79,7 @@ export const getJobById = async (req,res) =>{
         const jobId=req.params.id;
         const job = await Job.findById(jobId).populate({
             path:"applications"
-        });;
+        });
 
         if(!job){
             return res.status(404).json({
