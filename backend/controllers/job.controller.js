@@ -10,15 +10,15 @@ export const postJob= async (req,res) =>{
             })
         };
         const job =await Job.create({
-            title,
-            description,
+            title:title,
+            description:description,
             requirements: requirements.split(","),
             salary: Number(salary),
-            location,
-            jobType,
+            location:location,
+            jobType:jobType,
             experienceLevel: experience,
-            position,
-            company: companyId,
+            position:position,
+            company:companyId,
             created_by: userId
         });
 
