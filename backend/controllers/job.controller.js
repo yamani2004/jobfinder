@@ -47,6 +47,59 @@ export const getAllJobs = async (req,res) =>{
         // $regex: Performs a pattern match to find documents with fields that match the keyword.
         // Example: Searching for "developer" would match titles or descriptions containing "Developer", "developer", or "DEVELOPER".
 
+        // // here two db query if performed first one based on query get all the retrieved jobs 
+        // and that jobs contains only company.id used populate another mongodb quey that field name in 
+        // in jobs has company which has a ref : "Company" model name of Company and has collections companies get all data of compnay from there
+        /*
+        for example :
+
+            Before populate
+            [
+                  {
+                    "_id": "60c72b2f9b1d8e001c8a4567",
+                    "title": "Senior NodeJS Developer",
+                    "description": "...",
+                    "company": "60c72b2f9b1d8e001c8a4568", // Just the company's ID
+                    "createdAt": "2024-07-15T10:00:00.000Z"
+                  }
+            ]
+
+
+            After Populate
+
+            [
+          {
+            "_id": "60c72b2f9b1d8e001c8a4567",
+            "title": "Senior NodeJS Developer",
+            "description": "...",
+            "company": { // The full company document is embedded here
+              "_id": "60c72b2f9b1d8e001c8a4568",
+              "name": "Tech Innovations Inc.",
+              "location": "San Francisco, CA",
+              "industry": "Software",
+              "establishedYear": 2005,
+              "createdAt": "2023-01-01T00:00:00.000Z"
+            },
+            "createdAt": "2024-07-15T10:00:00.000Z" // Newer job
+          },
+          {
+            "_id": "60c72b2f9b1d8e001c8a4569",
+            "title": "Frontend Developer",
+            "description": "...",
+            "company": {
+              "_id": "60c72b2f9b1d8e001c8a4570",
+              "name": "Creative Solutions LLC",
+              "location": "New York, NY",
+              "industry": "Marketing",
+              "establishedYear": 2010,
+              "createdAt": "2023-05-20T00:00:00.000Z"
+            },
+            "createdAt": "2024-07-10T10:00:00.000Z" // Older job, appears after sorting
+          }
+        ]
+
+            createdAt:-1 sort in dec order 
+        */
         const jobs=await Job.find(query).populate({
             path:"company"
         }).sort({createdAt:-1});
